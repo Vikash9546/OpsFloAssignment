@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
 import { 
-  Home, Bot 
+  Home, Bot, FileText 
 } from 'lucide-react';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('dashboard');
   const [chatOpen, setChatOpen] = useState(false);
   const [chatQuery, setChatQuery] = useState("");
   const [triggerQuerySend, setTriggerQuerySend] = useState(false);
@@ -34,19 +35,31 @@ function App() {
         </div>
 
         {/* Navigation Items */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <div className="nav-item active">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
+          <div 
+            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setCurrentPage('dashboard')}
+          >
             <Home size={18} />
             <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Dashboard</span>
+          </div>
+          <div 
+            className={`nav-item ${currentPage === 'complaints' ? 'active' : ''}`}
+            onClick={() => setCurrentPage('complaints')}
+          >
+            <FileText size={18} />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Complaints</span>
           </div>
         </div>
       </aside>
 
       {/* Scrollable Main Content Dashboard */}
       <main className="main-content">
-
-
-        <MaintainerDashboard triggerDiagnostics={triggerDiagnostics} />
+        <MaintainerDashboard 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          triggerDiagnostics={triggerDiagnostics} 
+        />
 
         {/* Sliding Chatbot Overlay */}
         <RAGChatbot 

@@ -3,7 +3,7 @@ import {
   FileText, AlertTriangle, Wrench, CheckCircle2, Send, X, HelpCircle, Filter, Pencil, MoreVertical 
 } from 'lucide-react';
 
-export default function MaintainerDashboard({ triggerDiagnostics }) {
+export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 'dashboard', setCurrentPage }) {
   const [tickets, setTickets] = useState([]);
   const [complaint, setComplaint] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,6 +36,13 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
   useEffect(() => {
     fetchTickets();
   }, []);
+
+  const handleStatCardClick = (filterObj) => {
+    setActiveFilter(filterObj);
+    if (currentPage !== 'complaints') {
+      setCurrentPage('complaints');
+    }
+  };
 
   const handleSubmit = async () => {
     if(!complaint.trim()) return;
@@ -116,10 +123,12 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
       {/* Welcome Banner */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '0.25rem' }}>
         <h2 className="title" style={{ fontSize: '1.5rem', color: '#111827', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          Welcome back, Admin 👋
+          {currentPage === 'dashboard' ? "Welcome back, Admin 👋" : "All Logged Complaints 📋"}
         </h2>
         <p className="subtitle" style={{ fontSize: '0.85rem', color: '#6b7280', fontWeight: 500 }}>
-          Monitor and manage maintenance complaints intelligently.
+          {currentPage === 'dashboard' 
+            ? "Monitor and manage maintenance complaints intelligently." 
+            : "View, filter, and execute AI troubleshooting on all registered tickets."}
         </p>
       </div>
 
@@ -128,7 +137,7 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
         {/* Total Complaints */}
         <div 
           className="card card-interactive" 
-          onClick={() => setActiveFilter(null)}
+          onClick={() => handleStatCardClick(null)}
           style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -151,7 +160,7 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
         {/* High Priority */}
         <div 
           className="card card-interactive" 
-          onClick={() => setActiveFilter({ type: 'priority', value: 'High', label: 'High Priority' })}
+          onClick={() => handleStatCardClick({ type: 'priority', value: 'High', label: 'High Priority' })}
           style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -174,7 +183,7 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
         {/* In Progress */}
         <div 
           className="card card-interactive" 
-          onClick={() => setActiveFilter({ type: 'status', value: 'In Progress', label: 'In Progress' })}
+          onClick={() => handleStatCardClick({ type: 'status', value: 'In Progress', label: 'In Progress' })}
           style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -197,7 +206,7 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
         {/* Resolved */}
         <div 
           className="card card-interactive" 
-          onClick={() => setActiveFilter({ type: 'status', value: 'Resolved', label: 'Resolved' })}
+          onClick={() => handleStatCardClick({ type: 'status', value: 'Resolved', label: 'Resolved' })}
           style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -221,60 +230,62 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
       {/* Main Content Column Stack */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {/* Submission Form Card */}
-        <div className="card" style={{ border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
-            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb', color: '#111827' }}>
-              <Pencil size={16} />
+        {currentPage === 'dashboard' && (
+          <div className="card" style={{ border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
+              <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb', color: '#111827' }}>
+                <Pencil size={16} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h3 className="title text-sm" style={{ fontSize: '0.9rem', color: '#111827', fontWeight: 700 }}>Submit New Ticket</h3>
+                <p className="text-xs text-gray" style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 500 }}>
+                  Describe the maintenance issue in detail so our AI agent can analyze and classify it.
+                </p>
+              </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <h3 className="title text-sm" style={{ fontSize: '0.9rem', color: '#111827', fontWeight: 700 }}>Submit New Ticket</h3>
-              <p className="text-xs text-gray" style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 500 }}>
-                Describe the maintenance issue in detail so our AI agent can analyze and classify it.
-              </p>
-            </div>
-          </div>
-          <textarea 
-            className="chat-input"
-            style={{ 
-              borderRadius: '8px', 
-              minHeight: '90px', 
-              padding: '1rem', 
-              width: '100%', 
-              margin: '1rem 0',
-              border: '1px solid #e5e7eb',
-              fontSize: '0.85rem',
-              outline: 'none',
-              background: '#ffffff',
-              fontFamily: 'Inter, sans-serif'
-            }}
-            placeholder="Describe the maintenance issue... (e.g., 'The compressor is smoking')" 
-            value={complaint}
-            onChange={(e) => setComplaint(e.target.value)}
-          />
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button 
+            <textarea 
+              className="chat-input"
               style={{ 
-                background: '#8BDFDD', 
-                color: '#000000', 
-                borderRadius: '6px', 
-                cursor: 'pointer', 
-                padding: '0.55rem 1.25rem', 
-                border: 'none', 
-                fontSize: '0.85rem', 
-                fontWeight: 700, 
-                display: 'flex', 
-                alignItems: 'center',
-                gap: '0.35rem',
-                transition: 'all 0.2s ease',
-                opacity: (loading || !complaint.trim()) ? 0.6 : 1
-              }} 
-              onClick={handleSubmit} 
-              disabled={loading || !complaint.trim()}
-            >
-              <Send size={14} /> {loading ? "Analyzing..." : "Submit to Agent"}
-            </button>
+                borderRadius: '8px', 
+                minHeight: '90px', 
+                padding: '1rem', 
+                width: '100%', 
+                margin: '1rem 0',
+                border: '1px solid #e5e7eb',
+                fontSize: '0.85rem',
+                outline: 'none',
+                background: '#ffffff',
+                fontFamily: 'Inter, sans-serif'
+              }}
+              placeholder="Describe the maintenance issue... (e.g., 'The compressor is smoking')" 
+              value={complaint}
+              onChange={(e) => setComplaint(e.target.value)}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                style={{ 
+                  background: '#8BDFDD', 
+                  color: '#000000', 
+                  borderRadius: '6px', 
+                  cursor: 'pointer', 
+                  padding: '0.55rem 1.25rem', 
+                  border: 'none', 
+                  fontSize: '0.85rem', 
+                  fontWeight: 700, 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'all 0.2s ease',
+                  opacity: (loading || !complaint.trim()) ? 0.6 : 1
+                }} 
+                onClick={handleSubmit} 
+                disabled={loading || !complaint.trim()}
+              >
+                <Send size={14} /> {loading ? "Analyzing..." : "Submit to Agent"}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Table Card */}
         <div className="card" style={{ border: '1px solid #e5e7eb', borderRadius: '12px', padding: '1.5rem' }}>
@@ -283,15 +294,22 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
               <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb', color: '#111827' }}>
                 <FileText size={16} />
               </div>
-              <h3 className="title text-sm" style={{ fontSize: '0.9rem', color: '#111827', fontWeight: 700 }}>Recent Complaints</h3>
+              <h3 className="title text-sm" style={{ fontSize: '0.9rem', color: '#111827', fontWeight: 700 }}>
+                {currentPage === 'dashboard' ? "Recent Complaints" : "Complaints Repository"}
+              </h3>
             </div>
-            <span 
-              className="text-sm font-semibold" 
-              onClick={() => setActiveFilter(null)}
-              style={{ fontSize: '0.85rem', color: '#000000', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-            >
-              View All <span style={{ fontSize: '0.95rem' }}>&rarr;</span>
-            </span>
+            {currentPage === 'dashboard' && (
+              <span 
+                className="text-sm font-semibold" 
+                onClick={() => {
+                  setActiveFilter(null);
+                  setCurrentPage('complaints');
+                }}
+                style={{ fontSize: '0.85rem', color: '#000000', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+              >
+                View All <span style={{ fontSize: '0.95rem' }}>&rarr;</span>
+              </span>
+            )}
           </div>
 
           {/* Filter Banner */}
@@ -321,36 +339,39 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
               </tr>
             </thead>
             <tbody>
-              {ticketsToRender.length === 0 ? (
-                <tr><td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>No matching tickets found.</td></tr>
-              ) : ticketsToRender.map((t, i) => {
-                const status = t.status || localStatuses[t.ticket_id] || "Resolved";
-                let badgeClass = "badge-Resolved";
-                if (status === "New") badgeClass = "badge-New";
-                if (status === "In Progress") badgeClass = "badge-In_Progress";
+              {(() => {
+                const renderList = currentPage === 'dashboard' ? ticketsToRender.slice(0, 3) : ticketsToRender;
+                return renderList.length === 0 ? (
+                  <tr><td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>No matching tickets found.</td></tr>
+                ) : renderList.map((t, i) => {
+                  const status = t.status || localStatuses[t.ticket_id] || "Resolved";
+                  let badgeClass = "badge-Resolved";
+                  if (status === "New") badgeClass = "badge-New";
+                  if (status === "In Progress") badgeClass = "badge-In_Progress";
 
-                return (
-                  <tr key={i} onClick={() => setSelectedTicket(t)} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                    <td className="font-semibold" style={{ padding: '0.9rem 0.5rem', fontWeight: 600, color: '#111827' }}>{t.ticket_id}</td>
-                    <td style={{ padding: '0.9rem 0.5rem', color: '#111827', fontWeight: 500 }}>
-                      <span style={{ marginRight: '0.35rem' }}>{getIssueTypeIcon(t.issue_type)}</span>
-                      {t.issue_type}
-                    </td>
-                    <td style={{ padding: '0.9rem 0.5rem' }}>
-                      <span className={`badge badge-${t.priority}`}>{t.priority}</span>
-                    </td>
-                    <td style={{ padding: '0.9rem 0.5rem' }}>
-                      <span className={`badge ${badgeClass}`}>{status}</span>
-                    </td>
-                    <td style={{ padding: '0.9rem 0.5rem', color: '#6b7280', fontSize: '0.8rem' }}>
-                      {formatDate(t.created_at)}
-                    </td>
-                    <td style={{ padding: '0.9rem 0.5rem', textAlign: 'center', color: '#9ca3af' }}>
-                      <MoreVertical size={16} />
-                    </td>
-                  </tr>
-                );
-              })}
+                  return (
+                    <tr key={i} onClick={() => setSelectedTicket(t)} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                      <td className="font-semibold" style={{ padding: '0.9rem 0.5rem', fontWeight: 600, color: '#111827' }}>{t.ticket_id}</td>
+                      <td style={{ padding: '0.9rem 0.5rem', color: '#111827', fontWeight: 500 }}>
+                        <span style={{ marginRight: '0.35rem' }}>{getIssueTypeIcon(t.issue_type)}</span>
+                        {t.issue_type}
+                      </td>
+                      <td style={{ padding: '0.9rem 0.5rem' }}>
+                        <span className={`badge badge-${t.priority}`}>{t.priority}</span>
+                      </td>
+                      <td style={{ padding: '0.9rem 0.5rem' }}>
+                        <span className={`badge ${badgeClass}`}>{status}</span>
+                      </td>
+                      <td style={{ padding: '0.9rem 0.5rem', color: '#6b7280', fontSize: '0.8rem' }}>
+                        {formatDate(t.created_at)}
+                      </td>
+                      <td style={{ padding: '0.9rem 0.5rem', textAlign: 'center', color: '#9ca3af' }}>
+                        <MoreVertical size={16} />
+                      </td>
+                    </tr>
+                  );
+                });
+              })()}
             </tbody>
           </table>
         </div>
