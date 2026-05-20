@@ -88,7 +88,7 @@ export default function RAGChatbot({ isOpen, onClose, externalQuery, triggerSend
       {/* Header */}
       <div className="chat-header" style={{ background: 'transparent' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ background: 'var(--brand-purple-light)', padding: '0.6rem', borderRadius: '50%', color: 'var(--brand-purple)' }}>
+          <div style={{ background: 'var(--chatbot-blue-light)', padding: '0.6rem', borderRadius: '50%', color: 'var(--chatbot-blue)' }}>
             <Bot size={24} />
           </div>
           <div>
@@ -117,7 +117,7 @@ export default function RAGChatbot({ isOpen, onClose, externalQuery, triggerSend
                   {msg.sources.map((src, idx) => (
                     <div key={idx} className="source-item">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <FileText size={12} color="var(--brand-purple)" /> 
+                        <FileText size={12} color="var(--chatbot-blue)" /> 
                         <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{src.source}</span>
                       </div>
                       <span style={{ color: 'var(--brand-green)', fontWeight: 600 }}>{(src.score * 100).toFixed(1)}% match</span>

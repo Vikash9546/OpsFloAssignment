@@ -11,6 +11,10 @@
   --brand-purple-hover: #1f2937;
   --brand-purple-light: #f9fafb;
   --brand-purple-glow: rgba(0, 0, 0, 0.05);
+  --chatbot-blue: #2563eb;
+  --chatbot-blue-hover: #1d4ed8;
+  --chatbot-blue-light: #eff6ff;
+  --chatbot-blue-glow: rgba(37, 99, 235, 0.05);
   --brand-green: #10b981;
   --brand-green-light: #ecfdf5;
   --brand-orange: #f59e0b;
@@ -190,7 +194,7 @@ textarea.chat-input {
   height: 50px;
   outline: none;
 }
-textarea.chat-input:focus { border-color: var(--brand-purple); }
+textarea.chat-input:focus { border-color: var(--chatbot-blue); }
 
 /* Chatbot Overlay */
 .chatbot-overlay {
@@ -241,7 +245,7 @@ textarea.chat-input:focus { border-color: var(--brand-purple); }
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
-  background: var(--brand-purple);
+  background: var(--chatbot-blue);
   color: white;
   border: none;
   width: 36px;
@@ -254,7 +258,7 @@ textarea.chat-input:focus { border-color: var(--brand-purple); }
   transition: all 0.2s;
 }
 .send-btn:disabled { background: var(--text-secondary); cursor: not-allowed; }
-.send-btn:hover:not(:disabled) { transform: translateY(-50%) scale(1.1); }
+.send-btn:hover:not(:disabled) { background: var(--chatbot-blue-hover); transform: translateY(-50%) scale(1.1); }
 
 /* Chat Bubbles */
 .bubble-row { display: flex; width: 100%; }
@@ -272,7 +276,7 @@ textarea.chat-input:focus { border-color: var(--brand-purple); }
 }
 
 .bubble.user {
-  background: var(--brand-purple);
+  background: var(--chatbot-blue);
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -307,7 +311,7 @@ textarea.chat-input:focus { border-color: var(--brand-purple); }
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #000000;
+  background: var(--chatbot-blue);
   color: white;
   display: flex;
   align-items: center;
@@ -318,7 +322,7 @@ textarea.chat-input:focus { border-color: var(--brand-purple); }
   transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: none;
 }
-.fab:hover { transform: scale(1.1) translateY(-4px); }
+.fab:hover { background: var(--chatbot-blue-hover); transform: scale(1.1) translateY(-4px); }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
@@ -454,9 +458,9 @@ tbody tr:hover {
 }
 
 .chip:hover {
-  background: var(--brand-purple-light);
-  border-color: var(--border-focus);
-  color: var(--brand-purple);
+  background: var(--chatbot-blue-light);
+  border-color: var(--chatbot-blue);
+  color: var(--chatbot-blue);
   transform: translateY(-1px);
 }
 
