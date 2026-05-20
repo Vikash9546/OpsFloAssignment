@@ -113,21 +113,6 @@ npm run dev
 ```
 *Portal will launch at: `http://localhost:5173`*
 
----
-
-##  Premium Visual Elements (Vite + CSS Styling)
-
-We have customized the user interface with high-fidelity, hand-crafted aesthetic components:
-*   **Concentric Geometric "M" Logo**: A stunning pure CSS 16-pointed wireframe star formed by concentric rotated layers (`0deg`, `45deg`, `22.5deg`, `67.5deg`) with transparent coral boundaries (`#ff5e7e`). It performs a smooth `15deg` rotational concentric twist transition and scale animation on hover.
-*   **Color Accents**: 
-    *   **Forest Green Active Button**: The active "Dashboard" sidebar item renders with a gorgeous forest green background (`#306D29`) and white text.
-    *   **Teal Submit Button**: The ticket "Submit to Agent" button has a high-contrast bright pastel mint-teal background (`#8BDFDD`) and dark charcoal text (`#000000` with `font-weight: 700`) for premium contrast and modern glassmorphic look.
-*   **RAG Structured Timeline & Safety Banners**: Overhauls standard markdown response blocks. If the RAG response is structured, it separates content into:
-    *   * Summary Card*: Soft-blue layout callout with a thick left-border accent.
-    *   * Procedure Timeline*: Interactive numbered vertical timeline flow linking steps beautifully.
-    *   * Safety Warning Alert Box*: Heavy emergency callout with soft-red background and deep-crimson left accent border.
-
----
 
 ##  Architecture Decisions & Production Specifications
 
