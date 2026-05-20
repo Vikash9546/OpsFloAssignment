@@ -1,0 +1,49 @@
+McGraw-Hill STANDARD HANDBOOKS
+Maintenance Engineering Handbook
+SIXTH EDITION
+LINDLEY R. HIGGINS
+R. KEITH МОВLEY
+
+This page intentionally left blank.
+MAINTENANCE ENGINEERING HANDBOOK
+Lindley R. Higgins, P.E. (deceased)
+R. Keith Mobley Editor in Chief
+The Plant Performance Group Knoxville, Tenn.
+Ricky Smith Associate Editor
+President, Technical Training Division
+Life Cycle Engineering Charleston, S.C.
+Sixth Edition
+
+Copyright © 2002 by The McGraw-Hill Companies, Inc.
+
+Chapter 1: Introduction to the Theory and Practice of Maintenance
+As with any discipline built upon the foundations of science and technology, the study of maintenance begins with a definition of maintenance. Because so many misconceptions about this definition exist, a portion of it must be presented in negative terms. So deeply, in fact, are many of these misconceptions rooted in the minds of management and many maintenance practitioners that perhaps the negatives should be given first attention.
+
+Maintenance is not merely preventive maintenance, although this aspect is an important ingredient. Maintenance is not lubrication, although lubrication is one of its primary functions. Nor is maintenance simply a frenetic rush to repair a broken machine part or building segment, although this is more often than not the dominant maintenance activity.
+
+In a more positive vein, maintenance is a science since its execution relies, sooner or later, on most or all of the sciences. It is an art because seemingly identical problems regularly demand and receive varying approaches and actions and because some managers, foremen, and mechanics display greater aptitude for it than others show or even attain. It is above all a philosophy because it is a discipline that can be applied intensively, modestly, or not at all, depending upon a wide range of variables that frequently transcend more immediate and obvious solutions. Moreover, maintenance is a philosophy because it must be as carefully fitted to the operation or organization it serves as a fine suit of clothes is fitted to its wearer and because the way it is viewed by its executors will shape its effectiveness.
+
+Admitting this to be true, why must this science-art-philosophy be assigned—in manufacturing, power production, or service facilities—to one specific, all-encompassing maintenance department? Why is it essential to organize and administer the maintenance function in the same manner that other areas are so handled? This chapter will endeavor to answer these questions. This handbook will develop the general rules and basic philosophies required to establish a sound maintenance engineering organization. And, it will also supply background on the key sciences and technologies that underlie the practice of maintenance.
+
+Let us, however, begin by looking at how the maintenance function is to be transformed into an operation in terms of its scope and organization, bearing in mind its reason for being—solving the day-to-day problems inherent in keeping the physical facility (plant, machinery, buildings, services)—in good operating order. In effect, what must the maintenance function do?
+
+SCOPE OF RESPONSIBILITIES
+Primary Functions
+Maintenance of Existing Plant Equipment. This activity represents the physical reason for the existence of the maintenance group. Responsibility here is simply to make necessary repairs to production machinery quickly and economically and to anticipate these repairs and employ preventive maintenance where possible to prevent them.
+
+Maintenance of Existing Plant Buildings and Grounds. The repairs to buildings and to the external property of any plant—roads, railroad tracks, in-plant sewer systems, and water supply facilities—are among the duties generally assigned to the maintenance engineering group. Additional aspects of buildings and grounds maintenance may be included in this area of responsibility.
+
+Equipment Inspection and Lubrication. Traditionally, all equipment inspections and lubrication have been assigned to the maintenance organization.
+
+Utilities Generation and Distribution. In any plant generating its own electricity and providing its own process steam, the powerhouse assumes the functions of a small public utilities company and may justify an operating department of its own.
+
+Secondary Functions
+Storeskeeping. In most plants it is essential to differentiate between mechanical stores and general stores. The administration of mechanical stores normally falls within the maintenance engineering group’s area.
+
+Plant Protection. This category usually includes two distinct subgroups: guards or watchmen; fire-control squads. Incorporation of these functions with maintenance engineering is generally common practice.
+
+Waste Disposal. This function and that of yard maintenance are usually combined as specific assignments of the maintenance department.
+
+Salvage. If a large part of plant activity concerns offgrade products, a special salvage unit should be set up. But if salvage involves mechanical equipment, scrap lumber, paper, containers, etc., it should be assigned to maintenance.
+
+Insurance Administration. This category includes claims, process equipment and pressure-vessel inspection, liaison with underwriters’ representatives, and the handling of insurance recommendations. These functions are normally included with maintenance since it is here that most of the information will originate.

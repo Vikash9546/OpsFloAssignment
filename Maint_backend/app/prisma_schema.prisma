@@ -1,0 +1,19 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+model Complaint {
+  id                 Int      @id @default(autoincrement())
+  ticket_id          String   @unique
+  original_complaint String
+  issue_type         String
+  priority           String
+  summary            String
+  created_at         DateTime @default(now())
+}
