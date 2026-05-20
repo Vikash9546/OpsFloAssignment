@@ -165,9 +165,9 @@ body {
 .badge-High { background: #dc2626; color: #ffffff; border: 1px solid #dc2626; font-weight: 600; }
 .badge-Medium { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
 .badge-Low { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
-.badge-Resolved { background: transparent; color: #111827; border: 1px solid #e5e7eb; }
-.badge-In_Progress { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
-.badge-New { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
+.badge-Resolved { background: #eaf5ea; color: #306D29; border: 1px solid #cce8cc; font-weight: 600; }
+.badge-In_Progress { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 600; }
+.badge-New { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 600; }
 
 /* Tables */
 table { width: 100%; border-collapse: collapse; }
