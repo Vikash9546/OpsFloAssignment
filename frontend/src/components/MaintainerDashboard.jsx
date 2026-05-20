@@ -425,9 +425,17 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
                   {["New", "In Progress", "Resolved"].map(status => {
                     const currentStatus = selectedTicket.status || localStatuses[selectedTicket.ticket_id] || "Resolved";
                     const isActive = currentStatus === status;
-                    let badgeClass = "badge-New";
+                    let badgeClass = "badge-Resolved";
+                    if (status === "New") badgeClass = "badge-New";
                     if (status === "In Progress") badgeClass = "badge-In_Progress";
-                    if (status === "Resolved") badgeClass = "badge-Resolved";
+                    
+                    const activeStyles = (() => {
+                      if (!isActive) return { border: '1px solid #e5e7eb', background: 'transparent', color: '#6b7280' };
+                      if (status === "New") return { border: '2px solid #2563eb', background: '#2563eb', color: '#ffffff' };
+                      if (status === "In Progress") return { border: '2px solid #f59e0b', background: '#f59e0b', color: '#ffffff' };
+                      if (status === "Resolved") return { border: '2px solid #306D29', background: '#306D29', color: '#ffffff' };
+                      return { border: '2px solid #000000', background: '#000000', color: '#ffffff' };
+                    })();
                     
                     return (
                       <button
@@ -462,9 +470,9 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
                           }
                         }}
                         style={{
-                          border: isActive ? '2px solid #000000' : '1px solid #e5e7eb',
-                          background: isActive ? '#000000' : 'transparent',
-                          color: isActive ? '#ffffff' : '#6b7280',
+                          border: activeStyles.border,
+                          background: activeStyles.background,
+                          color: activeStyles.color,
                           opacity: 1,
                           cursor: 'pointer',
                           borderRadius: '99px',
@@ -503,9 +511,10 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
                 onClick={() => {
                   const query = `Recommend step-by-step diagnostic safety and maintenance troubleshooting procedures based on technical manuals for a ${selectedTicket.issue_type} complaint: "${selectedTicket.original_complaint}"`;
                   triggerDiagnostics(query);
+                  setSelectedTicket(null); // Direct redirection! Close the details drawer so the sliding RAG Chatbot is immediately visible
                 }}
                 style={{
-                  background: '#000000',
+                  background: '#0A7C6E',
                   color: 'white',
                   border: 'none',
                   borderRadius: '6px',
