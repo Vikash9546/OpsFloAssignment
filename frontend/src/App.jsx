@@ -55,6 +55,17 @@ function App() {
 
       {/* Scrollable Main Content Dashboard */}
       <main className="main-content">
+        {/* Mobile Top Header (M Logo) */}
+        <header className="mobile-top-header">
+          <div className="logo-emblem-box mobile-emblem">
+            <div className="emblem-shape shape-1"></div>
+            <div className="emblem-shape shape-2"></div>
+            <div className="emblem-shape shape-3"></div>
+            <div className="emblem-shape shape-4"></div>
+            <div className="emblem-m">M</div>
+          </div>
+        </header>
+
         <MaintainerDashboard 
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
