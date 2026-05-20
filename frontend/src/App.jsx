@@ -78,6 +78,24 @@ function App() {
       <button className="fab" onClick={() => setChatOpen(!chatOpen)}>
         <Bot size={28} />
       </button>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="mobile-nav-bar">
+        <button 
+          className={`mobile-nav-btn ${currentPage === 'dashboard' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('dashboard')}
+        >
+          <Home size={20} />
+          <span>Dashboard</span>
+        </button>
+        <button 
+          className={`mobile-nav-btn ${currentPage === 'complaints' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('complaints')}
+        >
+          <FileText size={20} />
+          <span>Complaints</span>
+        </button>
+      </nav>
     </div>
   );
 }

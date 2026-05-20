@@ -327,53 +327,55 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
             </div>
           )}
 
-          <table style={{ width: '100%', fontSize: '0.85rem' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Ticket ID</th>
-                <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Issue Type</th>
-                <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Priority</th>
-                <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Status</th>
-                <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Date & Time</th>
-                <th style={{ padding: '0.75rem 0.5rem', width: '40px' }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {(() => {
-                const renderList = currentPage === 'dashboard' ? ticketsToRender.slice(0, 3) : ticketsToRender;
-                return renderList.length === 0 ? (
-                  <tr><td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>No matching tickets found.</td></tr>
-                ) : renderList.map((t, i) => {
-                  const status = t.status || localStatuses[t.ticket_id] || "Resolved";
-                  let badgeClass = "badge-Resolved";
-                  if (status === "New") badgeClass = "badge-New";
-                  if (status === "In Progress") badgeClass = "badge-In_Progress";
+          <div style={{ overflowX: 'auto', width: '100%', WebkitOverflowScrolling: 'touch' }}>
+            <table style={{ width: '100%', minWidth: '600px', fontSize: '0.85rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Ticket ID</th>
+                  <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Issue Type</th>
+                  <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Priority</th>
+                  <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Status</th>
+                  <th style={{ padding: '0.75rem 0.5rem', fontWeight: 600, color: '#6b7280', fontSize: '0.8rem' }}>Date & Time</th>
+                  <th style={{ padding: '0.75rem 0.5rem', width: '40px' }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {(() => {
+                  const renderList = currentPage === 'dashboard' ? ticketsToRender.slice(0, 3) : ticketsToRender;
+                  return renderList.length === 0 ? (
+                    <tr><td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>No matching tickets found.</td></tr>
+                  ) : renderList.map((t, i) => {
+                    const status = t.status || localStatuses[t.ticket_id] || "Resolved";
+                    let badgeClass = "badge-Resolved";
+                    if (status === "New") badgeClass = "badge-New";
+                    if (status === "In Progress") badgeClass = "badge-In_Progress";
 
-                  return (
-                    <tr key={i} onClick={() => setSelectedTicket(t)} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                      <td className="font-semibold" style={{ padding: '0.9rem 0.5rem', fontWeight: 600, color: '#111827' }}>{t.ticket_id}</td>
-                      <td style={{ padding: '0.9rem 0.5rem', color: '#111827', fontWeight: 500 }}>
-                        <span style={{ marginRight: '0.35rem' }}>{getIssueTypeIcon(t.issue_type)}</span>
-                        {t.issue_type}
-                      </td>
-                      <td style={{ padding: '0.9rem 0.5rem' }}>
-                        <span className={`badge badge-${t.priority}`}>{t.priority}</span>
-                      </td>
-                      <td style={{ padding: '0.9rem 0.5rem' }}>
-                        <span className={`badge ${badgeClass}`}>{status}</span>
-                      </td>
-                      <td style={{ padding: '0.9rem 0.5rem', color: '#6b7280', fontSize: '0.8rem' }}>
-                        {formatDate(t.created_at)}
-                      </td>
-                      <td style={{ padding: '0.9rem 0.5rem', textAlign: 'center', color: '#9ca3af' }}>
-                        <MoreVertical size={16} />
-                      </td>
-                    </tr>
-                  );
-                });
-              })()}
-            </tbody>
-          </table>
+                    return (
+                      <tr key={i} onClick={() => setSelectedTicket(t)} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                        <td className="font-semibold" style={{ padding: '0.9rem 0.5rem', fontWeight: 600, color: '#111827' }}>{t.ticket_id}</td>
+                        <td style={{ padding: '0.9rem 0.5rem', color: '#111827', fontWeight: 500 }}>
+                          <span style={{ marginRight: '0.35rem' }}>{getIssueTypeIcon(t.issue_type)}</span>
+                          {t.issue_type}
+                        </td>
+                        <td style={{ padding: '0.9rem 0.5rem' }}>
+                          <span className={`badge badge-${t.priority}`}>{t.priority}</span>
+                        </td>
+                        <td style={{ padding: '0.9rem 0.5rem' }}>
+                          <span className={`badge ${badgeClass}`}>{status}</span>
+                        </td>
+                        <td style={{ padding: '0.9rem 0.5rem', color: '#6b7280', fontSize: '0.8rem' }}>
+                          {formatDate(t.created_at)}
+                        </td>
+                        <td style={{ padding: '0.9rem 0.5rem', textAlign: 'center', color: '#9ca3af' }}>
+                          <MoreVertical size={16} />
+                        </td>
+                      </tr>
+                    );
+                  });
+                })()}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
