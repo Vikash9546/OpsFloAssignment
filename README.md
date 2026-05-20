@@ -116,8 +116,6 @@ npm run dev
 
 ##  Architecture Decisions & Production Specifications
 
-### Genuine Assumptions Made
-
 1.  **Fault-Tolerant LLM Output Parsing (`llm_service.py`)**: 
     We assume that despite utilizing Groq's JSON mode (`response_format={"type": "json_object"}`), LLM API failures, rate-limiting, or malformed JSON payloads can occur. To prevent frontend crashes and blockages in core complaint logging, `LLMService` incorporates a local keyword-based heuristic fallback system (`_get_fallback_payload`). This assumes that scanning for keywords (e.g., `motor`, `wire`, `voltage` for `Electrical` classification; `gear`, `pump`, `leak` for `Mechanical`) and searching for emergency signals (e.g., `smoke`, `fire`, `spark` for `High` priority) is a reliable method to successfully classify and log a ticket when LLM communication fails.
 2.  **State-Transient Connection Pooling Safeguards (`complaint_routes.py` & `maintenance_agent.py`)**:
