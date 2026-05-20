@@ -1,22 +1,22 @@
-# 🔧 Maintainer AI — Intelligent Maintenance Agent System
+# Maintainer AI — Intelligent Maintenance Agent System
 
 Maintainer AI is a premium, high-fidelity agentic AI platform designed to process natural language industrial equipment complaints, classify issues, prioritize tasks, and deliver structured, context-grounded troubleshooting procedures. 
 
 The system leverages a modern **Three-Tier Service Architecture**:
-1. 🖥️ **Interactive Client Portal (React + Vite + Vanilla CSS)**: A luxury Vercel/Linear-inspired dark-mode-accented workspace with premium visual card systems, dynamic timeline flows, and safety banners.
-2. ⚙️ **Core Operational Backend (`Maint_backend` - FastAPI + PostgreSQL + Prisma ORM)**: Persists complaints, generates unique ticket numbers, and provides dynamic ticket status synchronization.
-3. 🧠 **Context-Grounded RAG Pipeline (`RAG_backend` - FastAPI + ChromaDB + SentenceTransformers)**: Ingests heavy industrial maintenance manuals (`maintenance-engineering-handbook.pdf`) locally, performs semantic vector search, and uses Llama-3.1-8b (via Groq) to draft strict safety precautions and technical guidelines.
+1.  **Interactive Client Portal (React + Vite + Vanilla CSS)**: A luxury Vercel/Linear-inspired dark-mode-accented workspace with premium visual card systems, dynamic timeline flows, and safety banners.
+2.  **Core Operational Backend (`Maint_backend` - FastAPI + PostgreSQL + Prisma ORM)**: Persists complaints, generates unique ticket numbers, and provides dynamic ticket status synchronization.
+3.  **Context-Grounded RAG Pipeline (`RAG_backend` - FastAPI + ChromaDB + SentenceTransformers)**: Ingests heavy industrial maintenance manuals (`maintenance-engineering-handbook.pdf`) locally, performs semantic vector search, and uses Llama-3.1-8b (via Groq) to draft strict safety precautions and technical guidelines.
 
 ---
 
-## 📐 System Architecture Flow
+##  System Architecture Flow
 ```mermaid
 graph TD
-    User[🖥️ Frontend Portal] -->|1. Submit Complaint| MaintBE[⚙️ Core Operational Backend: Port 8000]
-    MaintBE -->|2. Persist Complaint with status: New| DB[(🗄️ PostgreSQL Database)]
-    User -->|3. Trigger RAG Diagnostics| RAGBE[🧠 RAG Backend: Port 8001]
-    RAGBE -->|4. Query Top 3 Similar Chunks| VDB[(💾 ChromaDB Vector Database)]
-    RAGBE -->|5. Grounded Prompt Context| LLM[☁️ Groq Llama-3.1-8b API]
+    User[ Frontend Portal] -->|1. Submit Complaint| MaintBE[ Core Operational Backend: Port 8000]
+    MaintBE -->|2. Persist Complaint with status: New| DB[( PostgreSQL Database)]
+    User -->|3. Trigger RAG Diagnostics| RAGBE[ RAG Backend: Port 8001]
+    RAGBE -->|4. Query Top 3 Similar Chunks| VDB[( ChromaDB Vector Database)]
+    RAGBE -->|5. Grounded Prompt Context| LLM[ Groq Llama-3.1-8b API]
     LLM -->|6. Highly Structured Response| RAGBE
     RAGBE -->|7. Structured Diagnostics Response| User
     User -->|8. Toggle Status: In Progress / Resolved| MaintBE
@@ -25,7 +25,7 @@ graph TD
 
 ---
 
-## 🚀 Unified Quick Start & Setup
+##  Unified Quick Start & Setup
 
 ### Prerequisites
 *   **Python**: Version `3.12+` installed.
@@ -35,7 +35,7 @@ graph TD
 
 ---
 
-### 💾 Step 1: Database Setup & Configuration
+### Step 1: Database Setup & Configuration
 1. Open or create the configuration `.env` inside `Maint_backend/.env`:
    ```env
    # Groq API Credentials
@@ -58,7 +58,7 @@ graph TD
 
 ---
 
-### 🧠 Step 2: RAG Backend & Manual Ingestion
+### Step 2: RAG Backend & Manual Ingestion
 1. Place your target industrial maintenance guide (`maintenance-engineering-handbook.pdf`) in the root directory.
 2. Open or create the configuration `.env` inside `RAG_backend/.env`:
    ```env
@@ -77,7 +77,7 @@ graph TD
 
 ---
 
-### 🖥️ Step 3: Frontend Client Installation
+###  Step 3: Frontend Client Installation
 1. Navigate to the `frontend` folder and install packages:
    ```bash
    cd ../frontend
@@ -86,7 +86,7 @@ graph TD
 
 ---
 
-## 🏃 Running the Services Locally
+##  Running the Services Locally
 
 To run the complete system, you must start all three services simultaneously.
 
@@ -115,7 +115,7 @@ npm run dev
 
 ---
 
-## 🎨 Premium Visual Elements (Vite + CSS Styling)
+##  Premium Visual Elements (Vite + CSS Styling)
 
 We have customized the user interface with high-fidelity, hand-crafted aesthetic components:
 *   **Concentric Geometric "M" Logo**: A stunning pure CSS 16-pointed wireframe star formed by concentric rotated layers (`0deg`, `45deg`, `22.5deg`, `67.5deg`) with transparent coral boundaries (`#ff5e7e`). It performs a smooth `15deg` rotational concentric twist transition and scale animation on hover.
@@ -123,13 +123,13 @@ We have customized the user interface with high-fidelity, hand-crafted aesthetic
     *   **Forest Green Active Button**: The active "Dashboard" sidebar item renders with a gorgeous forest green background (`#306D29`) and white text.
     *   **Teal Submit Button**: The ticket "Submit to Agent" button has a high-contrast bright pastel mint-teal background (`#8BDFDD`) and dark charcoal text (`#000000` with `font-weight: 700`) for premium contrast and modern glassmorphic look.
 *   **RAG Structured Timeline & Safety Banners**: Overhauls standard markdown response blocks. If the RAG response is structured, it separates content into:
-    *   *📋 Summary Card*: Soft-blue layout callout with a thick left-border accent.
-    *   *⚙️ Procedure Timeline*: Interactive numbered vertical timeline flow linking steps beautifully.
-    *   *⚠️ Safety Warning Alert Box*: Heavy emergency callout with soft-red background and deep-crimson left accent border.
+    *   * Summary Card*: Soft-blue layout callout with a thick left-border accent.
+    *   * Procedure Timeline*: Interactive numbered vertical timeline flow linking steps beautifully.
+    *   * Safety Warning Alert Box*: Heavy emergency callout with soft-red background and deep-crimson left accent border.
 
 ---
 
-## 📄 Architecture Decisions & Production Specifications
+##  Architecture Decisions & Production Specifications
 
 ### Assumptions Made
 1.  **Groq Infrastructure Availability**: Assumed local developers have access to a Groq API Key to execute Llama-3.1-8b queries synchronously.
