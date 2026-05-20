@@ -193,8 +193,25 @@ textarea.chat-input {
   resize: none;
   height: 50px;
   outline: none;
+  transition: all 0.2s ease-in-out;
 }
 textarea.chat-input:focus { border-color: var(--chatbot-blue); }
+
+/* Premium Red Hover Highlight for all inputs and textareas */
+input,
+textarea,
+.chat-input,
+.search-bar {
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out !important;
+}
+
+input:hover,
+textarea:hover,
+.chat-input:hover,
+.search-bar:hover {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
 
 /* Chatbot Overlay */
 .chatbot-overlay {
