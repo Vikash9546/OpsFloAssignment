@@ -84,51 +84,7 @@ graph TD
    npm install
    ```
 
----
 
-## 🐳 Containerized Deployment (Recommended Production Setup)
-
-You can run the entire **Maintainer AI** stack—including a local dedicated PostgreSQL database, core operations backend, RAG diagnostic backend, and built React client served via Nginx—with a single command using **Docker Compose**.
-
-### 📋 Prerequisites
-*   **Docker & Docker Compose** installed on your host system.
-*   A root `.env` file containing your Groq API key:
-    ```env
-    GROQ_API_KEY=gsk_your_groq_api_key_goes_here
-    ```
-
-### ⚡ Build and Start the Services
-To build and launch all containers simultaneously in background (detached) mode:
-```bash
-docker-compose up --build -d
-```
-
-This command automatically orchestrates:
-1.  **🗄️ postgres (port 5432)**: Spins up a PostgreSQL 16 database with persistent local volume mappings.
-2.  **⚙️ core_api (port 8000)**: Builds the core Python backend, runs connection validations, applies Prisma schema definitions (`prisma db push`), and starts the Uvicorn web server.
-3.  **🧠 rag_api (port 8001)**: Builds the RAG backend, compiles local vector database modules, mounts persistent local volumes for ChromaDB, and starts the RAG query engine.
-4.  **🖥️ web_portal (port 3000)**: Executes a two-stage Node-to-Nginx container build, compiles your Vite React assets into a production bundle, and serves them using Nginx on host port `3000` with optimized asset caching and SPA routing.
-
-### 🔍 Verification Endpoints
-*   **Web Portal**: `http://localhost:3000`
-*   **Core Operational API Docs**: `http://localhost:8000/docs`
-*   **RAG Diagnostic API Docs**: `http://localhost:8001/docs`
-
-### 🛠️ Useful Operations Commands
-*   **View Real-Time Service Logs**:
-    ```bash
-    docker-compose logs -f
-    ```
-*   **Stop Services Safely (Preserving Data)**:
-    ```bash
-    docker-compose down
-    ```
-*   **Teardown Services & Wipe Volumes**:
-    ```bash
-    docker-compose down -v
-    ```
-
----
 
 ## 🏃 Running the Services Manually (Local Processes)
 
