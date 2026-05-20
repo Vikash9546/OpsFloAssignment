@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
 import { 
-  Wrench, Home, Settings, Bell, Search, Bot, ChevronDown, LogOut 
+  Wrench, Home, Settings, Bot, LogOut 
 } from 'lucide-react';
 
 function App() {
@@ -54,22 +54,7 @@ function App() {
 
       {/* Scrollable Main Content Dashboard */}
       <main className="main-content">
-        <header className="top-header" style={{ height: '64px', borderBottom: '1px solid #e5e7eb' }}>
-          <div className="search-wrapper">
-            <Search size={18} style={{ color: '#9ca3af' }} />
-            <input type="text" className="search-bar" placeholder="Search complaints, tickets..." style={{ background: '#f9fafb' }} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-            <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Bell size={20} style={{ color: '#111827' }} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#000000', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 600 }}>A</div>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#111827' }}>Admin</span>
-              <ChevronDown size={14} style={{ color: '#6b7280' }} />
-            </div>
-          </div>
-        </header>
+
 
         <MaintainerDashboard triggerDiagnostics={triggerDiagnostics} />
 
