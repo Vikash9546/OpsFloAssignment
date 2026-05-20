@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
 import { 
-  Home, Settings, Bot, LogOut 
+  Home, Bot 
 } from 'lucide-react';
 
 function App() {
@@ -38,18 +38,6 @@ function App() {
           <div className="nav-item active">
             <Home size={18} />
             <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Dashboard</span>
-          </div>
-          <div className="nav-item">
-            <Settings size={18} />
-            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Settings</span>
-          </div>
-        </div>
-
-        {/* Sidebar Bottom Nav with Logout */}
-        <div className="nav-bottom">
-          <div className="nav-item" style={{ marginBottom: 0 }}>
-            <LogOut size={18} />
-            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Logout</span>
           </div>
         </div>
       </aside>

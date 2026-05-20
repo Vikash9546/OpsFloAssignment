@@ -254,17 +254,19 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button 
               style={{ 
-                background: '#000000', 
-                color: 'white', 
+                background: '#8BDFDD', 
+                color: '#000000', 
                 borderRadius: '6px', 
                 cursor: 'pointer', 
                 padding: '0.55rem 1.25rem', 
                 border: 'none', 
                 fontSize: '0.85rem', 
-                fontWeight: 600, 
+                fontWeight: 700, 
                 display: 'flex', 
                 alignItems: 'center',
-                gap: '0.35rem'
+                gap: '0.35rem',
+                transition: 'all 0.2s ease',
+                opacity: (loading || !complaint.trim()) ? 0.6 : 1
               }} 
               onClick={handleSubmit} 
               disabled={loading || !complaint.trim()}
