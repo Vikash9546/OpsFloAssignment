@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
+import SystemManual from './components/SystemManual';
 import { 
-  Home, Bot, FileText 
+  Home, Bot, FileText, BookOpen 
 } from 'lucide-react';
 
 function App() {
@@ -50,6 +51,13 @@ function App() {
             <FileText size={18} />
             <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Complaints</span>
           </div>
+          <div 
+            className={`nav-item ${currentPage === 'manual' ? 'active' : ''}`}
+            onClick={() => setCurrentPage('manual')}
+          >
+            <BookOpen size={18} />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Manual</span>
+          </div>
         </div>
       </aside>
 
@@ -66,11 +74,15 @@ function App() {
           </div>
         </header>
 
-        <MaintainerDashboard 
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          triggerDiagnostics={triggerDiagnostics} 
-        />
+        {currentPage === 'manual' ? (
+          <SystemManual />
+        ) : (
+          <MaintainerDashboard 
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            triggerDiagnostics={triggerDiagnostics} 
+          />
+        )}
 
         {/* Sliding Chatbot Overlay */}
         <RAGChatbot 
@@ -105,6 +117,13 @@ function App() {
         >
           <FileText size={20} />
           <span>Complaints</span>
+        </button>
+        <button 
+          className={`mobile-nav-btn ${currentPage === 'manual' ? 'active' : ''}`}
+          onClick={() => setCurrentPage('manual')}
+        >
+          <BookOpen size={20} />
+          <span>Manual</span>
         </button>
       </nav>
     </div>

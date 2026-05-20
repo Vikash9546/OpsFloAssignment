@@ -101,10 +101,10 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
 
   const getIssueTypeIcon = (type) => {
     const t = type?.toLowerCase() || '';
-    if (t.includes('electrical')) return '⚡';
-    if (t.includes('mechanical')) return '⚙️';
-    if (t.includes('plumbing')) return '💧';
-    return '🛠️';
+    if (t.includes('electrical')) return '';
+    if (t.includes('mechanical')) return '';
+    if (t.includes('plumbing')) return '';
+    return '';
   };
 
   const formatDate = (dateStr) => {
@@ -122,8 +122,8 @@ export default function MaintainerDashboard({ triggerDiagnostics, currentPage = 
     <div className="dashboard-grid" style={{ gap: '1.25rem' }}>
       {/* Welcome Banner */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '0.25rem' }}>
-        <h2 className="title" style={{ fontSize: '1.5rem', color: '#111827', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {currentPage === 'dashboard' ? "Welcome back, Admin 👋" : "All Logged Complaints 📋"}
+        <h2 className="title" style={{ fontSize: '2.0rem', color: '#111827', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {currentPage === 'dashboard' ? "Welcome back" : "All Logged Complaints"}
         </h2>
         <p className="subtitle" style={{ fontSize: '0.85rem', color: '#6b7280', fontWeight: 500 }}>
           {currentPage === 'dashboard' 

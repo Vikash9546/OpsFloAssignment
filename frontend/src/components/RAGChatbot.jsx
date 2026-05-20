@@ -10,9 +10,9 @@ export default function RAGChatbot({ isOpen, onClose, externalQuery, triggerSend
   const scrollRef = useRef(null);
 
   const quickChips = [
-    { label: "🛠️ Safety Protocols", query: "Suggest standard safety protocols and lock-out tag-out checklist for heavy machinery servicing." },
-    { label: "⚡ Electrical Standards", query: "What are the standard safety practices for inspecting electrical components and control panels?" },
-    { label: "📋 General Checklist", query: "Show a standard preventive maintenance operation guide and checklist for rotating industrial equipment." }
+    { label: "Safety Protocols", query: "Suggest standard safety protocols and lock-out tag-out checklist for heavy machinery servicing." },
+    { label: "Electrical Standards", query: "What are the standard safety practices for inspecting electrical components and control panels?" },
+    { label: "General Checklist", query: "Show a standard preventive maintenance operation guide and checklist for rotating industrial equipment." }
   ];
 
   // Auto-scroll to bottom of chat
