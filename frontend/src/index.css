@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 :root {
   --bg-main: #fcfcfc;
@@ -534,105 +534,91 @@ tbody tr:hover {
 }
 
 /* ==========================================================================
-   CSS Logo & Wrench Component Styles
+   CSS Logo & Premium Geometric Emblem Component Styles
    ========================================================================== */
-.logo-container {
+.logo-container-vertical {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-  padding: 0.5rem 0.25rem;
+  text-align: center;
+  margin-bottom: 2.2rem;
+  padding: 0.75rem 0.5rem;
   user-select: none;
+  cursor: pointer;
+  width: 100%;
 }
 
-.logo-icon-box {
-  width: 44px;
-  height: 44px;
-  background: #000000;
-  border-radius: 12px;
+.logo-emblem-box {
+  position: relative;
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0.75rem;
 }
 
-.logo-icon-box:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
-}
-
-.css-wrench {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  transform: rotate(45deg);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.logo-icon-box:hover .css-wrench {
-  transform: rotate(55deg) scale(1.05);
-}
-
-.wrench-handle {
+.emblem-shape {
   position: absolute;
-  left: 10px;
-  top: 7px;
-  width: 4px;
-  height: 10px;
-  background-color: #ffffff;
-  border-radius: 1px;
-}
-
-.wrench-head {
-  position: absolute;
-  left: 6px;
-  top: 0px;
-  width: 12px;
-  height: 12px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  background-color: #000000;
+  width: 52px;
+  height: 52px;
+  border: 1.5px solid rgba(255, 94, 126, 0.7);
   box-sizing: border-box;
+  background-color: transparent;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.wrench-jaw-cut {
-  position: absolute;
-  left: 10px;
-  top: -2px;
-  width: 4px;
-  height: 5px;
-  background-color: #000000;
-}
+.shape-1 { transform: rotate(0deg); }
+.shape-2 { transform: rotate(45deg); }
+.shape-3 { transform: rotate(22.5deg); }
+.shape-4 { transform: rotate(67.5deg); }
 
-.wrench-tail {
-  position: absolute;
-  left: 8px;
-  bottom: 1px;
-  width: 8px;
-  height: 8px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  background-color: #000000;
-  box-sizing: border-box;
-}
+/* On hover, create a gorgeous concentric twist and scale effect */
+.logo-container-vertical:hover .shape-1 { transform: rotate(15deg) scale(1.05); border-color: rgba(255, 94, 126, 0.95); }
+.logo-container-vertical:hover .shape-2 { transform: rotate(60deg) scale(1.05); border-color: rgba(255, 94, 126, 0.95); }
+.logo-container-vertical:hover .shape-3 { transform: rotate(37.5deg) scale(1.05); border-color: rgba(255, 94, 126, 0.95); }
+.logo-container-vertical:hover .shape-4 { transform: rotate(82.5deg) scale(1.05); border-color: rgba(255, 94, 126, 0.95); }
 
-.logo-title {
-  font-size: 1.05rem;
-  color: #111827;
-  font-weight: 700;
-  line-height: 1.1;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.logo-subtitle {
-  font-size: 0.7rem;
-  color: #6b7280;
+.emblem-m {
+  font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+  font-size: 1.6rem;
+  color: #ff5e7e;
   font-weight: 500;
-  margin-top: 0.1rem;
+  z-index: 10;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(-1px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo-container-vertical:hover .emblem-m {
+  transform: translateY(-2px) scale(1.08);
+  color: #ff3b64;
+  text-shadow: 0 0 12px rgba(255, 94, 126, 0.25);
+}
+
+.logo-title-premium {
+  font-size: 0.95rem;
+  color: #ff5e7e;
+  font-weight: 600;
   line-height: 1.2;
+  margin: 0;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.4s ease;
+}
+
+.logo-container-vertical:hover .logo-title-premium {
+  color: #ff3b64;
+}
+
+.logo-subtitle-premium {
+  font-size: 0.55rem;
+  color: #ff8e9e;
+  font-weight: 500;
+  margin-top: 0.35rem;
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 

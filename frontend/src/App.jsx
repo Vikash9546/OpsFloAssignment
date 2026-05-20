@@ -21,19 +21,16 @@ function App() {
       {/* Fixed Left Sidebar */}
       <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         {/* Sidebar Header Logo */}
-        <div className="logo-container">
-          <div className="logo-icon-box">
-            <div className="css-wrench">
-              <div className="wrench-handle"></div>
-              <div className="wrench-head"></div>
-              <div className="wrench-jaw-cut"></div>
-              <div className="wrench-tail"></div>
-            </div>
+        <div className="logo-container-vertical">
+          <div className="logo-emblem-box">
+            <div className="emblem-shape shape-1"></div>
+            <div className="emblem-shape shape-2"></div>
+            <div className="emblem-shape shape-3"></div>
+            <div className="emblem-shape shape-4"></div>
+            <div className="emblem-m">M</div>
           </div>
-          <div>
-            <h1 className="logo-title">Maintainer AI</h1>
-            <p className="logo-subtitle">Intelligent Maintenance Agent</p>
-          </div>
+          <h1 className="logo-title-premium">Maintainer AI</h1>
+          <p className="logo-subtitle-premium">Intelligent Maintenance Agent</p>
         </div>
 
         {/* Navigation Items */}
