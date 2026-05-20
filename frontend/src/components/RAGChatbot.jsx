@@ -115,13 +115,18 @@ export default function RAGChatbot({ isOpen, onClose, externalQuery, triggerSend
                     Sources (Top {msg.sources.length}):
                   </div>
                   {msg.sources.map((src, idx) => (
-                    <div key={idx} className="source-item">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <FileText size={12} color="var(--chatbot-blue)" /> 
-                        <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{src.source}</span>
+                    <details key={idx} style={{ marginBottom: '0.4rem', border: '1px solid var(--border-subtle)', borderRadius: '4px', overflow: 'hidden' }}>
+                      <summary style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.4rem 0.5rem', background: 'var(--bg-main)', cursor: 'pointer', fontSize: '0.75rem', listStyle: 'none' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <FileText size={12} color="var(--chatbot-blue)" /> 
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{src.source}</span>
+                        </div>
+                        <span style={{ color: 'var(--brand-green)', fontWeight: 600 }}>{(src.score * 100).toFixed(1)}% match</span>
+                      </summary>
+                      <div style={{ padding: '0.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)', background: 'white', lineHeight: '1.4', borderTop: '1px solid var(--border-subtle)', maxHeight: '120px', overflowY: 'auto' }}>
+                        {src.content || "No text content available for this chunk."}
                       </div>
-                      <span style={{ color: 'var(--brand-green)', fontWeight: 600 }}>{(src.score * 100).toFixed(1)}% match</span>
-                    </div>
+                    </details>
                   ))}
                 </div>
               )}
