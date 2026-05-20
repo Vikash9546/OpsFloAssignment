@@ -116,30 +116,49 @@ npm run dev
 
 ##  Architecture Decisions & Production Specifications
 
-### Assumptions Made
-1.  **Groq Infrastructure Availability**: Assumed local developers have access to a Groq API Key to execute Llama-3.1-8b queries synchronously.
-2.  **Stateless API Design**: Assumed ticket status patches and data operations occur over standard transactional REST HTTP calls. 
-3.  **Local Vector DB Sufficiency**: For a single massive PDF manual (`maintenance-engineering-handbook.pdf`), a persistent local SQLite-backed Chroma vector store using open-source `SentenceTransformers` (`all-MiniLM-L6-v2`) is highly optimized, eliminating recurring third-party embedding API costs.
+### Genuine Assumptions Made
 
-### Trade-offs Considered
-1.  **FastAPI/Python Prisma ORM vs Node.js/TypeScript**: 
-    *   *Trade-off*: Node.js has great Webpack/Vite synergy, but Python is the industry leader for heavy AI workloads (PDF text extraction, chunking, SentenceTransformers vectorization).
-    *   *Decision*: Built backend in Python (FastAPI) while utilizing **Prisma ORM for Python** to maintain type-safe database schemas.
-2.  **Zero-Dependency Regex Parser vs heavy JSON validation (Instructor/Langchain Output Parser)**:
-    *   *Trade-off*: Forcing JSON outputs from LLMs blocks streaming, increases generation latency by up to `2.5x`, and inflates token cost.
-    *   *Decision*: Crafted a highly precise structured markdown instruction set inside `prompt_template.py` coupled with a high-performance frontend regex parser inside `RAGChatbot.jsx`. This delivers instantaneous, streaming-friendly timeline and warning banners with zero UI delay.
-3.  **Local SQLite ChromaDB vs pgvector/Pinecone**:
-    *   *Trade-off*: Pinecone handles millions of vectors instantly, but requires api subscriptions and credentials.
-    *   *Decision*: Used ChromaDB persistent client local directories, enabling seamless zero-config manual ingestion directly within the developer's local filesystem.
+1.  **Fault-Tolerant LLM Output Parsing (`llm_service.py`)**: 
+    We assume that despite utilizing Groq's JSON mode (`response_format={"type": "json_object"}`), LLM API failures, rate-limiting, or malformed JSON payloads can occur. To prevent frontend crashes and blockages in core complaint logging, `LLMService` incorporates a local keyword-based heuristic fallback system (`_get_fallback_payload`). This assumes that scanning for keywords (e.g., `motor`, `wire`, `voltage` for `Electrical` classification; `gear`, `pump`, `leak` for `Mechanical`) and searching for emergency signals (e.g., `smoke`, `fire`, `spark` for `High` priority) is a reliable method to successfully classify and log a ticket when LLM communication fails.
+2.  **State-Transient Connection Pooling Safeguards (`complaint_routes.py` & `maintenance_agent.py`)**:
+    We assume that PostgreSQL connections made via Python's Prisma ORM client are transient and prone to dropping or idling. Instead of assuming a persistent, always-open pool connection, every database retrieval and update in our route handlers explicitly triggers `if not db.is_connected(): await db.connect()`. This ensures that even after long periods of inactivity, incoming complaints and status changes execute cleanly.
+3.  **Sequential Ticket Prefix Soundness (`ticket_service.py`)**:
+    We assume that looking up the highest sequential ID (`TKT-YYYY-XXXX`) using `startswith` and a descending sort (`order={"ticket_id": "desc"}`) is a mathematically sound method for identifying the last sequence number for incrementing. This relies entirely on the assumption that all ticket string indexes remain strictly formatted and padded. If this query fails or times out, the service falls back to generating a pseudo-randomized sequence suffix (`random.randint(1, 9999)`) to prevent blocking the ticket submission path.
+4.  **Noisy Document Chunk Extraction (`chunking_service.py`)**:
+    We assume that raw text extracted page-by-page from PDFs using PyMuPDF (`fitz`) contains non-printable noise characters and null bytes (`\x00`). The service explicitly strips these characters (`clean_text = text.replace("\x00", "").strip()`) and enforces a strict quality-level constraint where chunks shorter than 10 characters (`if len(chunk_text.strip()) < 10: continue`) are filtered out entirely to avoid indexing meaningless chunks (like isolated page numbers or footer lines) in ChromaDB.
+5.  **Strict Markdown-to-UI Structural Conformance (`RAGChatbot.jsx` & `prompt_template.py`)**:
+    The system assumes a tightly coupled contract between the RAG system's prompt constraints and the React client. `prompt_template.py` strictly mandates that the LLM structure its reply using exact markdown headers (`### 📋 Summary`, `### ⚙️ Technical Troubleshooting Procedure`, `### ⚠️ Critical Safety Precautions`). The React component `RAGChatbot.jsx` relies on a regex-based splitting parser (`parseStructuredResponse`) to slice these blocks apart and render high-fidelity, interactive components (a soft-blue Summary card, an animated vertical SVG-linked Timeline, and a soft-red warning alert box for Safety). It assumes that if any header is absent or slightly altered, it must fall back gracefully to a line-by-line renderer (`renderFallbackContent`).
+
+### Technical Trade-offs Considered
+
+1.  **Hybrid Regex UI Extraction vs. Strict Structured JSON Generation**:
+    *   *Trade-off*: We could have instructed the RAG LLM to output a raw JSON array containing separate fields for the summary, troubleshooting steps, and safety precautions. However, forcing JSON output from LLMs restricts their conversational fluency, increases token generation costs, prevents standard streaming capabilities, and increases API latency by up to 2.5x.
+    *   *Decision*: We designed a hybrid approach: the RAG backend generates structured Markdown, and `RAGChatbot.jsx` parses this markdown on the fly using case-insensitive, emoji-independent regex queries. This enables a rich, interactive, componentized layout in the browser with zero UI rendering delay, while allowing the model to write clean, natural-sounding technical procedures.
+2.  **Robust In-Memory Database Fallbacks vs. Fail-Fast Validation**:
+    *   *Trade-off*: In transactional enterprise systems, if a database lookup or an LLM call fails, the system should fail fast and return a `503 Service Unavailable` or `500 Internal Server Error` to prevent logging inconsistent state.
+    *   *Decision*: Since this is an industrial maintenance setting where field logging must never be blocked, we traded pure database transaction strictness for high availability. In `llm_service.py` and `ticket_service.py`, if a DB sequence check fails or the Groq API fails, the backend silently handles the error and dynamically builds a fallback payload with estimated values. This ensures a technician in the field can always record a complaint immediately, even during a network outage.
+3.  **Local SQLite ChromaDB + SentenceTransformers vs. Cloud pgvector/Pinecone**:
+    *   *Trade-off*: A cloud vector database like Pinecone offers lightning-fast vector indexing and handles millions of documents with automatic backups. However, it requires constant network requests, introduces latency, incurs API subscription costs, and demands external API key management.
+    *   *Decision*: For single-manual vectorization (e.g., `maintenance-engineering-handbook.pdf`), a local SQLite-backed Chroma vector store using open-source SentenceTransformers (`all-MiniLM-L6-v2`) is highly optimized. It eliminates third-party subscription fees, enables complete offline data processing, and operates inside the local server's filesystem, making it a zero-config solution.
 
 ### Recommended Production Improvements
-1.  **Consolidated Relational & Vector Storage**: 
-    *   Migrate local SQLite ChromaDB and cloud PostgreSQL into a unified **Supabase PostgreSQL** instance with `pgvector` enabled. This guarantees ACID transactions, cross-table joins between tickets and vector embeddings, and unified schema migrations.
-2.  **Serverless Background Task Processing**:
-    *   For ingestion pipelines (chunking and vectorizing massive new PDFs), offload processing to an asynchronous worker queue like **Celery & Redis** or **Temporal** instead of executing them in FastAPI background threads.
-3.  **Semantic Query Caching**:
-    *   Implement an in-memory **Redis Semantic Cache** (such as GPTCache) to intercept incoming complaints. If an issue matches a previously vectorized query within `95%` similarity, retrieve the cached troubleshoot timeline immediately, cutting down LLM generation latency to `<10ms`.
-4.  **Multi-Tenant Isolation & Authentication**:
-    *   Introduce OAuth2 (e.g., Auth0 or Clerk) to isolate relational records and RAG manual queries on a per-organization/tenant level.
-5.  **TypeScript & Component Isolation**:
-    *   Migrate the Vite JS portal to TypeScript for compile-time safety and extract complex inline styles into global modular CSS variables for advanced system-wide theme toggling.
+
+1.  **Offload Heavy CPU Processing to Dedicated Distributed Workers**:
+    *   *Current Implementation*: The `/ingest` route inside `rag_routes.py` offloads PyMuPDF document loading, recursive chunking, and SentenceTransformer embedding generation to FastAPI's built-in `BackgroundTasks`.
+    *   *Production Path*: Because generating embeddings is highly CPU-bound and blocks Python's single-threaded event loop, a large PDF manual ingestion can freeze the API for minutes. In production, the ingestion pipeline should be offloaded to a dedicated distributed task queue like **Celery & Redis** or **Temporal**, running on separate worker nodes configured with GPU acceleration for SentenceTransformers.
+2.  **Consolidated Relational & Vector Storage (pgvector + Supabase)**:
+    *   *Current Implementation*: We split data across a local SQLite ChromaDB instance and a PostgreSQL relational database.
+    *   *Production Path*: To enable relational joins between ticket IDs and vector search chunks (e.g., querying "give me all tickets that match this section of the safety guide"), we should consolidate databases into a single **PostgreSQL instance with the pgvector extension** enabled. This allows ACID-compliant transactional migrations and unified schemas.
+3.  **Deterministic Token-Level JSON Generation (Pydantic / Instructor)**:
+    *   *Current Implementation*: `llm_service.py` passes a JSON prompt schema and parses the response string with Python's native `json.loads()`.
+    *   *Production Path*: To prevent runtime JSON decode errors and guarantee that keys like `issue_type`, `priority`, and `summary` conform strictly to expected database schemas, we should integrate a structured schema validation tool like **Pydantic** coupled with **Instructor** or **Outlines** to force token-level constraint generation.
+4.  **Semantic Query Caching (Redis Semantic Cache)**:
+    *   *Current Implementation*: Every technical question asked in the chatbot triggers an active embedding generation and a Groq API call.
+    *   *Production Path*: We should introduce a **Redis Semantic Cache** (such as GPTCache) to intercept incoming complaints and questions. If a technician asks a question that matches a previously answered query within a 95% similarity threshold, the system immediately serving the cached action plan timeline, cutting LLM latency to `<10ms` and saving Groq tokens.
+5.  **Dynamic PDF Page & Metadata Tracking**:
+    *   *Current Implementation*: The chunking service `chunking_service.py` tracks only the source filename in metadata.
+    *   *Production Path*: We should modify the PyMuPDF parsing loop to capture the physical page number (`page.number`) of the PDF as each chunk is split. This will allow the React frontend to display clickable, high-fidelity citation links (e.g., *"Source: Maintenance Handbook, Page 142"*), allowing technicians to cross-reference procedures in the original manual.
+6.  **TypeScript Migration & Global CSS Modernization**:
+    *   *Current Implementation*: The Vite frontend uses standard JavaScript and stores many inline styles directly inside JSX components.
+    *   *Production Path*: Migrate the frontend code to **TypeScript** for strict type-safe state tracking, and extract all styling variables into standard CSS modules or a clean utility framework. This ensures maintainability as the UI grows and allows simple toggle support for high-contrast accessibility modes used by technicians in high-noise industrial environments.
+
