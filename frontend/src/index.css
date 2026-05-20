@@ -156,7 +156,7 @@ body {
   gap: 0.25rem;
   border: 1px solid transparent;
 }
-.badge-High { background: #000000; color: #ffffff; border: 1px solid #000000; font-weight: 600; }
+.badge-High { background: #dc2626; color: #ffffff; border: 1px solid #dc2626; font-weight: 600; }
 .badge-Medium { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
 .badge-Low { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
 .badge-Resolved { background: transparent; color: #111827; border: 1px solid #e5e7eb; }
