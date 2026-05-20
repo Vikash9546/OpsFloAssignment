@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
 import { 
-  Wrench, Home, Settings, Bell, Search, Bot, ChevronDown 
+  Wrench, Home, Settings, Bell, Search, Bot, ChevronDown, LogOut 
 } from 'lucide-react';
 
 function App() {
@@ -19,40 +19,54 @@ function App() {
   return (
     <div className="app-container">
       {/* Fixed Left Sidebar */}
-      <aside className="sidebar">
-        <div className="flex items-center gap-3 mb-8" style={{ padding: '0.5rem' }}>
-          <div style={{ background: 'var(--brand-purple)', padding: '0.4rem', borderRadius: '8px' }}>
-            <Wrench size={20} color="white" />
+      <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Sidebar Header Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem', padding: '0.5rem 0.25rem' }}>
+          <div style={{ background: '#000000', padding: '0.45rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Wrench size={18} color="white" />
           </div>
           <div>
-            <h1 className="title" style={{ fontSize: '1.05rem', color: 'var(--text-primary)' }}>Maintainer AI</h1>
-            <p className="subtitle" style={{ fontSize: '0.7rem' }}>Intelligent Agent</p>
+            <h1 className="title" style={{ fontSize: '1.05rem', color: '#111827', fontWeight: 700, lineHeight: '1.1' }}>Maintainer AI</h1>
+            <p className="subtitle" style={{ fontSize: '0.7rem', color: '#6b7280', fontWeight: 500, marginTop: '0.1rem' }}>Intelligent Maintenance Agent</p>
           </div>
         </div>
 
-        <div className="nav-item active"><Home size={18} /> Dashboard</div>
+        {/* Navigation Items */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <div className="nav-item active">
+            <Home size={18} />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Dashboard</span>
+          </div>
+          <div className="nav-item">
+            <Settings size={18} />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Settings</span>
+          </div>
+        </div>
 
+        {/* Sidebar Bottom Nav with Logout */}
         <div className="nav-bottom">
-          <div className="nav-item"><Settings size={18} /> Settings</div>
+          <div className="nav-item" style={{ marginBottom: 0 }}>
+            <LogOut size={18} />
+            <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Logout</span>
+          </div>
         </div>
       </aside>
 
       {/* Scrollable Main Content Dashboard */}
       <main className="main-content">
-        <header className="top-header">
+        <header className="top-header" style={{ height: '64px', borderBottom: '1px solid #e5e7eb' }}>
           <div className="search-wrapper">
-            <Search size={18} />
-            <input type="text" className="search-bar" placeholder="Search complaints, tickets..." />
+            <Search size={18} style={{ color: '#9ca3af' }} />
+            <input type="text" className="search-bar" placeholder="Search complaints, tickets..." style={{ background: '#f9fafb' }} />
           </div>
-          <div className="flex items-center gap-5">
-            <div style={{ position: 'relative', cursor: 'pointer' }}>
-              <Bell size={20} className="text-gray" />
-              <div style={{ position: 'absolute', top: '-2px', right: '-2px', width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%' }}></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Bell size={20} style={{ color: '#111827' }} />
             </div>
-            <div className="flex items-center gap-3 font-semibold text-sm cursor-pointer ml-2">
-              <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'var(--brand-purple)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>A</div>
-              Admin
-              <ChevronDown size={16} className="text-gray" style={{ marginLeft: '-4px' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#000000', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 600 }}>A</div>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#111827' }}>Admin</span>
+              <ChevronDown size={14} style={{ color: '#6b7280' }} />
             </div>
           </div>
         </header>
