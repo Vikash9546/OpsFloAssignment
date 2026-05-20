@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="app-container">
       {/* Fixed Left Sidebar */}
-      <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <aside className="sidebar">
         {/* Sidebar Header Logo */}
         <div className="logo-container-vertical">
           <div className="logo-emblem-box">
