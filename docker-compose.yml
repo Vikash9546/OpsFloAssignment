@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: maintainer_db
+    restart: always
+    environment:
+      POSTGRES_USER: maintainer_admin
+      POSTGRES_PASSWORD: maintainer_secure_pwd_123
+      POSTGRES_DB: maintainer_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maintainer_admin -d maintainer_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  maint_backend:
+    build:
+      context: ./Maint_backend
+      dockerfile: Dockerfile
+    container_name: maintainer_core_api
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://maintainer_admin:maintainer_secure_pwd_123@db:5432/maintainer_db
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GROQ_MODEL: "llama-3.1-8b-instant"
+
+  rag_backend:
+    build:
+      context: ./RAG_backend
+      dockerfile: Dockerfile
+    container_name: maintainer_rag_api
+    restart: always
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./RAG_backend/chroma_db:/app/chroma_db
+      - ./maintenance-engineering-handbook.pdf:/app/maintenance-engineering-handbook.pdf
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: maintainer_web_portal
+    restart: always
+    ports:
+      - "3000:80" # Maps high-performance Nginx production server from port 80 to host port 3000
+    depends_on:
+      - maint_backend
+      - rag_backend
+
+volumes:
+  postgres_data:
+    driver: local
