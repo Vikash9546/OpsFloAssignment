@@ -51,11 +51,15 @@ class VectorService:
             distances = results["distances"][0] if "distances" in results else []
             
             for i in range(len(docs)):
-                score = distances[i] if i < len(distances) else 0.0
+                raw_distance = distances[i] if i < len(distances) else 0.0
+                # The embeddings are L2 normalized. We convert Squared L2 distance to Cosine Similarity.
+                # Formula: Cosine_Similarity = 1 - (L2_Distance / 2)
+                true_similarity = max(0.0, 1.0 - (raw_distance / 2.0))
+                
                 formatted_results.append({
                     "content": docs[i],
                     "source": metadatas[i].get("source", "Unknown"),
-                    "score": round(score, 4)
+                    "score": round(true_similarity, 4)
                 })
         
         return formatted_results
