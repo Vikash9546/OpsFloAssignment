@@ -63,7 +63,8 @@ class MaintenanceAgent:
                         "original_complaint": original_complaint,
                         "issue_type": issue_type,
                         "priority": priority,
-                        "summary": summary
+                        "summary": summary,
+                        "status": "New"
                     }
                 )
                 logger.info(f"Successfully saved ticket {ticket_id} to PostgreSQL database.")
@@ -76,6 +77,7 @@ class MaintenanceAgent:
                     "issue_type": db_record.issue_type,
                     "priority": db_record.priority,
                     "summary": db_record.summary,
+                    "status": db_record.status,
                     "created_at": db_record.created_at
                 }
 

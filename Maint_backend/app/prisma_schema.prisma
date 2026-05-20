@@ -15,5 +15,6 @@ model Complaint {
   issue_type         String
   priority           String
   summary            String
+  status             String   @default("New")
   created_at         DateTime @default(now())
 }

@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException, status
-from app.schemas.complaint_schema import ComplaintRequest, ComplaintResponse
+from app.schemas.complaint_schema import ComplaintRequest, ComplaintResponse, StatusUpdateRequest
 from app.agents.maintenance_agent import MaintenanceAgent
 from app.database import db
 from app.utils.logger import logger
@@ -64,6 +64,7 @@ async def get_all_complaints():
                 "issue_type": r.issue_type,
                 "priority": r.priority,
                 "summary": r.summary,
+                "status": r.status,
                 "created_at": r.created_at
             })
         logger.info(f"Successfully retrieved {len(response_data)} ticket records from the database.")
@@ -106,6 +107,7 @@ async def get_complaint_by_id(ticket_id: str):
             "issue_type": r.issue_type,
             "priority": r.priority,
             "summary": r.summary,
+            "status": r.status,
             "created_at": r.created_at
         }
     except HTTPException:
@@ -115,4 +117,59 @@ async def get_complaint_by_id(ticket_id: str):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail=f"Database query failed for ticket ID '{ticket_id}': {e}"
+        )
+
+@router.patch(
+    "/complaints/{ticket_id}/status", 
+    response_model=ComplaintResponse,
+    summary="Update ticket status",
+    description="Updates the operational status of a single maintenance complaint by searching for its unique ticket ID."
+)
+async def update_complaint_status(ticket_id: str, payload: StatusUpdateRequest):
+    logger.info(f"HTTP PATCH /complaints/{ticket_id}/status invoked with status: {payload.status}")
+    try:
+        ticket_id = ticket_id.strip()
+        status_val = payload.status.strip()
+        
+        # Validation
+        if status_val not in ["New", "In Progress", "Resolved"]:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid status. Allowed values are: 'New', 'In Progress', 'Resolved'."
+            )
+            
+        # Ensure database is connected
+        if not db.is_connected():
+            await db.connect()
+
+        # Update record
+        r = await db.complaint.update(
+            where={"ticket_id": ticket_id},
+            data={"status": status_val}
+        )
+        
+        if not r:
+            logger.warning(f"Requested Ticket ID '{ticket_id}' was not found for update.")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"Complaint ticket with ID '{ticket_id}' was not found."
+            )
+            
+        logger.info(f"Successfully updated ticket record status for '{ticket_id}' to '{status_val}'.")
+        return {
+            "ticket_id": r.ticket_id,
+            "original_complaint": r.original_complaint,
+            "issue_type": r.issue_type,
+            "priority": r.priority,
+            "summary": r.summary,
+            "status": r.status,
+            "created_at": r.created_at
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update database for ticket '{ticket_id}': {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail=f"Database update failed for ticket ID '{ticket_id}': {e}"
         )

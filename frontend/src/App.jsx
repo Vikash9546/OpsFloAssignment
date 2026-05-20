@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MaintainerDashboard from './components/MaintainerDashboard';
 import RAGChatbot from './components/RAGChatbot';
 import { 
-  Wrench, Home, Settings, Bot, LogOut 
+  Home, Settings, Bot, LogOut 
 } from 'lucide-react';
 
 function App() {
@@ -21,13 +21,18 @@ function App() {
       {/* Fixed Left Sidebar */}
       <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         {/* Sidebar Header Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem', padding: '0.5rem 0.25rem' }}>
-          <div style={{ background: '#000000', padding: '0.45rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Wrench size={18} color="white" />
+        <div className="logo-container">
+          <div className="logo-icon-box">
+            <div className="css-wrench">
+              <div className="wrench-handle"></div>
+              <div className="wrench-head"></div>
+              <div className="wrench-jaw-cut"></div>
+              <div className="wrench-tail"></div>
+            </div>
           </div>
           <div>
-            <h1 className="title" style={{ fontSize: '1.05rem', color: '#111827', fontWeight: 700, lineHeight: '1.1' }}>Maintainer AI</h1>
-            <p className="subtitle" style={{ fontSize: '0.7rem', color: '#6b7280', fontWeight: 500, marginTop: '0.1rem' }}>Intelligent Maintenance Agent</p>
+            <h1 className="logo-title">Maintainer AI</h1>
+            <p className="logo-subtitle">Intelligent Maintenance Agent</p>
           </div>
         </div>
 

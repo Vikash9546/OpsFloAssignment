@@ -532,3 +532,107 @@ tbody tr:hover {
   .title { font-size: 1.15rem; }
   .fab { bottom: 1.5rem; right: 1.5rem; width: 56px; height: 56px; }
 }
+
+/* ==========================================================================
+   CSS Logo & Wrench Component Styles
+   ========================================================================== */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem 0.25rem;
+  user-select: none;
+}
+
+.logo-icon-box {
+  width: 44px;
+  height: 44px;
+  background: #000000;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-icon-box:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.css-wrench {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  transform: rotate(45deg);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-icon-box:hover .css-wrench {
+  transform: rotate(55deg) scale(1.05);
+}
+
+.wrench-handle {
+  position: absolute;
+  left: 10px;
+  top: 7px;
+  width: 4px;
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 1px;
+}
+
+.wrench-head {
+  position: absolute;
+  left: 6px;
+  top: 0px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background-color: #000000;
+  box-sizing: border-box;
+}
+
+.wrench-jaw-cut {
+  position: absolute;
+  left: 10px;
+  top: -2px;
+  width: 4px;
+  height: 5px;
+  background-color: #000000;
+}
+
+.wrench-tail {
+  position: absolute;
+  left: 8px;
+  bottom: 1px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background-color: #000000;
+  box-sizing: border-box;
+}
+
+.logo-title {
+  font-size: 1.05rem;
+  color: #111827;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.logo-subtitle {
+  font-size: 0.7rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-top: 0.1rem;
+  line-height: 1.2;
+}
+

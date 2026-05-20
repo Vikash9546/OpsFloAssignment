@@ -18,12 +18,12 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
       const list = Array.isArray(data) ? data : (data.complaints || []);
       setTickets(list);
       
-      // Initialize local statuses for tickets that don't have one in localStatuses yet
+      // Initialize local statuses from backend or default to "New"
       setLocalStatuses(prev => {
         const next = { ...prev };
         list.forEach(t => {
           if (!next[t.ticket_id]) {
-            next[t.ticket_id] = "Resolved"; // Match the mockup screenshot's "Resolved" status for initial demo
+            next[t.ticket_id] = t.status || "New";
           }
         });
         return next;
@@ -409,13 +409,32 @@ export default function MaintainerDashboard({ triggerDiagnostics }) {
                     return (
                       <button
                         key={status}
-                        onClick={() => {
+                        onClick={async () => {
+                          // Optimistically update the UI state
                           setLocalStatuses(prev => ({
                             ...prev,
                             [selectedTicket.ticket_id]: status
                           }));
-                          // If it's a mock ticket, mutate its status field directly in-memory
-                          if (!tickets.length) {
+                          
+                          // Persist status change to database if this is a DB-backed ticket
+                          if (tickets.length && selectedTicket.ticket_id) {
+                            try {
+                              const res = await fetch(`http://127.0.0.1:8000/complaints/${selectedTicket.ticket_id}/status`, {
+                                method: "PATCH",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ status: status })
+                              });
+                              if (res.ok) {
+                                selectedTicket.status = status;
+                                fetchTickets();
+                              } else {
+                                console.error("Failed to update status on server.");
+                              }
+                            } catch (err) {
+                              console.error("Error patching status:", err);
+                            }
+                          } else {
+                            // If it's a mock ticket, mutate its status field directly in-memory
                             selectedTicket.status = status;
                           }
                         }}
